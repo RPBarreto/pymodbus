@@ -113,12 +113,12 @@ class TransactionManager(ModbusProtocol):
                     return self.sync_get_response(request.dev_id)
                 except asyncio.exceptions.TimeoutError:
                     count_retries += 1
-            if self.count_until_disconnect < 0:
-                self.connection_lost(asyncio.TimeoutError("Server not responding"))
-                raise ModbusIOException(
-                    "ERROR: No response received of the last requests (default: retries+3), CLOSING CONNECTION."
-                )
-            self.count_until_disconnect -= 1
+            # if self.count_until_disconnect < 0:
+            #     self.connection_lost(asyncio.TimeoutError("Server not responding"))
+            #     raise ModbusIOException(
+            #         "ERROR: No response received of the last requests (default: retries+3), CLOSING CONNECTION."
+            #     )
+            # self.count_until_disconnect -= 1
             txt = f"No response received after {self.retries} retries, continue with next request"
             Log.error(txt)
             raise ModbusIOException(txt)
