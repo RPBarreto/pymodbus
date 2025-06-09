@@ -200,7 +200,12 @@ class ModbusBaseSyncClient(ModbusClientMixin[ModbusPDU]):
         """
         if not self.connect():
             raise ConnectionException(f"Failed to connect[{self!s}]")
-        return self.transaction.sync_execute(no_response_expected, request)
+        try:
+            executeReturn = self.transaction.sync_execute(no_response_expected, request)
+        except Exception as e:
+            self.close()
+            raise e
+        return executeReturn
 
     def set_max_no_responses(self, max_count: int) -> None:
         """Override default max no request responses.
