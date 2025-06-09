@@ -55,6 +55,8 @@ class SerialTransport(asyncio.Transport):
         else:
             self.async_loop.remove_reader(self.sync_serial.fileno())
             self.async_loop.remove_writer(self.sync_serial.fileno())
+        self.sync_serial.reset_input_buffer()
+        self.sync_serial.reset_output_buffer()
         self.sync_serial.close()
         self.sync_serial = None  # type: ignore[assignment]
         if exc:
