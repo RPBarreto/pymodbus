@@ -254,6 +254,8 @@ class ModbusSerialClient(ModbusBaseSyncClient):
     def close(self):
         """Close the underlying socket connection."""
         if self.socket:
+            self.socket.reset_input_buffer()
+            self.socket.reset_output_buffer()
             self.socket.close()
         self.socket = None
 
